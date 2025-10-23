@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+  mysql_db:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: jugadores_fifa
+      MYSQL_USER: xacademy
+      MYSQL_PASSWORD: xacademyroot
+      MYSQL_CHARSET: utf8mb4
+      MYSQL_COLLATION: utf8mb4_unicode_ci
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d
+
+  backend:
+    build: ./backend_fifa
+    container_name: node_backend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: mysql_db
+      DB_USER: xacademy
+      DB_PASSWORD: xacademyroot
+      DB_NAME: jugadores_fifa
+    depends_on:
+      - mysql_db
+
+  frontend:
+    build: ./frontend_fifa
+    container_name: angular_frontend
+    restart: always
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:

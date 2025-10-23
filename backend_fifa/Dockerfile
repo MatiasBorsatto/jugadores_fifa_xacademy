@@ -1,0 +1,20 @@
+# Imagen base
+FROM node:20
+
+# Crear directorio de trabajo
+WORKDIR /app
+
+# Copiar package.json y package-lock.json
+COPY package*.json ./
+
+# Instalar dependencias
+RUN npm install
+
+# Copiar el resto del código
+COPY . .
+
+# Exponer el puerto que usa tu servidor (por ejemplo 3000)
+EXPOSE 3000
+
+# Comando de arranque
+CMD ["npm", "start"]
