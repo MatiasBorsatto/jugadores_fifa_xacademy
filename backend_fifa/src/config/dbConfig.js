@@ -14,7 +14,7 @@ const sequelize = new Sequelize({
   username: "xacademy",
   password: "xacademyroot",
   database: "jugadores_fifa",
-  logging: true, // o false si querés menos logs
+  logging: true,
 });
 
 export default sequelize;
